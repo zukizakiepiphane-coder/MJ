@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour toi Ma joue 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff1493 0%, #ff6347 25%, #ffa500 50%, #00bfff 75%, #32cd32 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .gift-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff1493 0%, #ff6347 25%, #ffa500 50%, #00bfff 75%, #32cd32 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .gift-wrapper.opened {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .gift-box-open {
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .gift-box-visual {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .gift-box-open:hover .gift-box-visual {
+            transform: translateY(-10px);
+        }
+
+        .gift-icon {
+            font-size: 5em;
+        }
+
+        .gift-text {
+            color: white;
+            font-size: 1.5em;
+            margin-top: 30px;
+            font-weight: bold;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .title {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ff1493, #ff6347, #ffa500, #00bfff, #32cd32, #ff1493);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: colorShift 8s ease-in-out infinite;
+        }
+
+        @keyframes colorShift {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .carousel-container {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .carousel-circle {
+            position: relative;
+            width: 300px;
+            height: 380px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #000;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            margin: 0 auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .photo-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .photo-slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .photo-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .poem-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            min-height: 60px;
+        }
+
+        .poem-text {
+            font-size: 0.95em;
+            line-height: 1.4;
+            font-style: italic;
+            font-weight: 600;
+            text-align: center;
+            color: white;
+            background: linear-gradient(90deg, #ff1493, #ff6347, #ffa500, #00bfff, #32cd32, #ff1493);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: colorShift 8s ease-in-out infinite;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border: 2px solid white;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .counter {
+            color: white;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .flower {
+            position: fixed;
+            font-size: 2.5em;
+            opacity: 0.8;
+            animation: flowerfalldown 4s ease-in forwards;
+            pointer-events: none;
+        }
+
+        @keyframes flowerfalldown {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(360deg) scale(0.5); }
+        }
+
+        .spark {
+            position: fixed;
+            pointer-events: none;
+        }
+
+        @keyframes sparkExplode {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Écran d'ouverture -->
+    <div class="gift-wrapper" id="giftWrapper">
+        <div class="gift-box-open" onclick="openGift()">
+            <div class="gift-box-visual">
+                <div class="gift-icon">🎁</div>
+            </div>
+            <div class="gift-text">Pour toi Ma joue</div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container" id="mainContent" style="display: none;">
+        <h1 class="title">Pour toi Ma joue 💝</h1>
+        
+        <div class="carousel-container">
+            <div class="carousel-circle">
+                <div class="carousel-inner" id="carouselInner"></div>
+            </div>
+            
+            <div class="poem-section">
+                <div class="poem-text" id="poemText">Chargement...</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="previousSlide()">← Précédent</button>
+            <button onclick="nextSlide()">Suivant →</button>
+        </div>
+
+        <div class="counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">4</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" loop>
+        <source src="DADJU - Reine (Clip Officiel).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const photos = [
+            'IMG-20260219-WA0151.jpg',
+            'IMG-20260221-WA0194.jpg',
+            'IMG-20260223-WA0004.jpg',
+            'IMG-20260223-WA0028.jpg'
+        ];
+
+        const poems = [
+            "Une amie est un trésor précieux,\nDans mon cœur, tu es celle qui brille le plus.",
+            "Notre amitié est comme une fleur,\nQui s'épanouit chaque jour avec plus de couleur.",
+            "Avec toi, chaque moment devient magique,\nNotre amitié est vraiment fantastique.",
+            "Tu es ma confidente, ma soeur du cœur,\nAvec toi, je trouve le vrai bonheur."
+        ];
+
+        let currentIndex = 0;
+        let autoPlayInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        function initCarousel() {
+            const carouselInner = document.getElementById('carouselInner');
+            
+            photos.forEach((photo, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'photo-slide' + (index === 0 ? ' active' : '');
+                
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = `Photo ${index + 1}`;
+                
+                slide.appendChild(img);
+                carouselInner.appendChild(slide);
+            });
+
+            document.getElementById('totalSlides').textContent = photos.length;
+            updatePoem();
+            startAutoPlay();
+        }
+
+        function updatePoem() {
+            document.getElementById('poemText').textContent = poems[currentIndex];
+        }
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                nextSlide();
+            }, 5000);
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        function nextSlide() {
+            const slides = document.querySelectorAll('.photo-slide');
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % slides.length;
+            slides[currentIndex].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentIndex + 1;
+            updatePoem();
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        function previousSlide() {
+            const slides = document.querySelectorAll('.photo-slide');
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            slides[currentIndex].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentIndex + 1;
+            updatePoem();
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        function openGift() {
+            document.getElementById('giftWrapper').classList.add('opened');
+            document.getElementById('mainContent').style.display = 'block';
+            
+            createFireworks();
+            createFlowerRain();
+            
+            setTimeout(() => {
+                audioPlayer.play().catch(e => console.log("Autoplay bloqué"));
+            }, 500);
+            
+            initCarousel();
+        }
+
+        function createFireworks() {
+            setInterval(() => {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight * 0.6;
+                
+                for (let i = 0; i < 15; i++) {
+                    const spark = document.createElement('div');
+                    spark.classList.add('spark');
+                    spark.textContent = '✨';
+                    spark.style.left = x + 'px';
+                    spark.style.top = y + 'px';
+                    
+                    const angle = (i / 15) * Math.PI * 2;
+                    const velocity = 50 + Math.random() * 100;
+                    spark.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                    spark.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                    spark.style.animation = `sparkExplode ${0.8 + Math.random() * 0.4}s ease-out forwards`;
+                    
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 1300);
+                }
+            }, 2000);
+        }
+
+        function createFlowerRain() {
+            const flowers = ['🌸', '🌺', '🌻', '🌷', '🌹'];
+            setInterval(() => {
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * window.innerWidth + 'px';
+                flower.style.top = '-50px';
+                document.body.appendChild(flower);
+                setTimeout(() => flower.remove(), 5000);
+            }, 400);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+    </script>
+</body>
+</html>
